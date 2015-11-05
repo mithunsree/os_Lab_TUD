@@ -1,4 +1,4 @@
-#include <stdio.h>
+/*#include <stdio.h>
 #include<pthread.h>
 
 //#include "types.h"
@@ -23,4 +23,4 @@ fprintf(stderr,"inside Thread");
 pthread_exit(0);
 
 }
-
+*/
