@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include<pthread.h>  //header file for thread functions
+#include <pthread.h>  //header file for thread functions
 
 
 void* my_thread_function(void *arg);
