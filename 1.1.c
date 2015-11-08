@@ -1,29 +1,38 @@
 #include <stdio.h>
+#include<unistd.h>
 #include <stdlib.h>
 //#include "types.h"
-int glob = 6; /* external variable in initialized data */
+int my_value = 42; /* external variable in initialized data */
 int main(void)
 {
 	//pid_t pid;
 	int pid = 0;
-	if ((pid = fork()) < 0) 
+        pid=fork();
+        usleep(500000);
+	if (pid < 0) 
 	{
 		fprintf(stderr,"fork error");
+                fflush(stdout);
 	} 
 	else if (pid == 0) 
 	{ /* child */
 		fprintf(stderr,"I am the Child:");
-		glob++; /* modify variables */
+                fflush(stdout);
+//                 usleep(500000);
+		my_value=18951; /* modify variables */
 	} 
 //	else 
 //	{
-//		sleep(2); /* parent */
+	 usleep(150000);
+//	sleep(2); /* parent */
 		wait();
 //	}
 	if(pid !=0 )	
 	{
 		fprintf(stderr,"I am the parent:");
+                fflush(stdout);
 	}
-	fprintf(stderr,"pid = %d, glob = %d\n", getpid(), glob);
+	fprintf(stderr,"pid = %d, my_value = %d\n", getpid(), my_value);
+        fflush(stdout);
 	exit(0);
 }
