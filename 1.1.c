@@ -8,7 +8,7 @@ int main(void)
 	//pid_t pid;
 	int pid = 0;
         pid=fork();
-        usleep(500000);
+        usleep(150000);
 	if (pid < 0) 
 	{
 		fprintf(stderr,"fork error");
@@ -23,7 +23,7 @@ int main(void)
 	} 
 //	else 
 //	{
-	 usleep(150000);
+	 usleep(500000);
 //	sleep(2); /* parent */
 		wait();
 //	}
