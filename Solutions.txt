@@ -10,9 +10,8 @@ Question 2.1 : The thread id of main thread and newly created thread always chan
 
 
 Task 3.1	: Refer to program 3.1.c
-Question 3.1	: The PID always changes and after re-initializing the global variable my_value to 18951 in child it retains its value 
-		  throughout the execution.Since my_value is a global variable changes done to it in the child process will also be 
-		  reflected in the parent process. 
+Question 3.1	: The PID always changes and changes to variables in a child process do not affect the value of the variables in the 
+		  parent process. 
 Question 3.2	: Pipes perhaps not exactly the most efficient way to do so, though.Threads share all address space, so we can easily pass 
 		  pointers around between threads, by stashing them in global variables or as an argument.
 		  The overhead of creating and opening the file descriptors will be costly and also one way communication is not efficient.
