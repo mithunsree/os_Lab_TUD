@@ -1,53 +1,62 @@
 #include <stdio.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 
-//#include "types.h"
+//Macros
+#define MAXLINE 100
 
-#define MAXLINE 50
+//Globals
+int my_value = 42;
 
-int glob = 6; /* external variable in initialized data */
+//The main
 int main(void)
 {
-	//pid_t pid;
 	int n;
 	int fd[2];
 	int pid;
-	char line[MAXLINE];
+	int status = 0;
+	int status_wait = 0;
+//	int i = 0;
+	char snd_msg[MAXLINE]="";
+	char rcv_msg[MAXLINE]="";
 
+//	for(i=0;i<100;i++){	
 	if (pipe(fd) < 0)
-	{
 		fprintf(stderr,"pipe error");
-	}
-
-	if ((pid = fork()) < 0) 
-	{
+	
+	if ((pid = fork()) < 0) {
 		fprintf(stderr,"fork error");
-	} 
-	else if (pid > 0) 
-	{ /* parent */
-		fprintf(stderr,"I am the Child:");
-		glob++; /* modify variables */
-		close(fd[0]);
-		write(fd[1], sprintf(line,"Hi, I am your parent. My PID=%d and my_value=%d\n",getpid(),glob), 46);
-	//	close(fd[0]);
-	//	n = read(fd[1], line, MAXLINE);
-//		sleep(5);
-	///	write(1,line,n);
+	}
+	usleep(150000); 
 
+	if (pid > 0) { /* parent */
+		close(fd[0]);
+		sprintf(snd_msg,"Hi, I am your parent. My PID=%d and my_value=%d",getpid(),my_value);
+		status = write(fd[1],snd_msg,sizeof(snd_msg));
+		if(status > 0)
+		{
+			fprintf(stderr,"I am the parent successfully sent the mesaage\n");
+			fprintf(stderr,"Parent PID:%d | my_value:%d\n",getpid(),my_value);
+		}
+		else
+		{
+			return -1;
+		}
+		wait(&status_wait);
 	} 
-	else 
-	{
-		sleep(2); /* child */
-//		wait();
+	else { /* child */
+		usleep(500000);
+		my_value = 18951;
 		close(fd[1]);
-		n = read(fd[0], line, MAXLINE);
-		write(1, line, n);
+		n = read(fd[0], rcv_msg, MAXLINE);
+		if( n > 0 )
+		{
+			fprintf(stderr,"I am the child I successfully read the message:\n");
+		}
+		write(STDOUT_FILENO, rcv_msg, n);
+		fprintf(stderr,"\nChild PID:%d | my_value:%d\n",getpid(),my_value);
 	}
-	if(pid !=0 )	
-	{
-		//wait();
-		sleep(3);
-		fprintf(stderr,"I am the parent:");
-	}
-	fprintf(stderr,"pid = %d, glob = %d\n", getpid(), glob);
-	exit(0);
+//}
+	return 0;
 }
