@@ -17,3 +17,10 @@ Question 3.2	: Pipes perhaps not exactly the most efficient way to do so, though
 		  pointers around between threads, by stashing them in global variables or as an argument.
 		  The overhead of creating and opening the file descriptors will be costly and also one way communication is not efficient.
 		  The only advantage may be the syncronization between threads as one thread will only read and the other shall write.
+		  
+Task 5.1 : Refer to program 5.1.c
+
+Question 5.1 : After running the program atleast 100 times you can notice that the pid of the Parent as well as the child keeps on changing but the global my_value remains unchanged. In Shared Memory the access to the memory is unsychronized. So if a process is updating the shared memory, then another process should not be updating or reading the same shared memory. But in message queue eventhough the access is slow, it makes sure the data is read in the same order the data is written.
+
+Question 5.2: In a multithreading situation, the threads that are active could use the shared memory to communicate between each other. Since the memory are shared there could be conservation of memory space. And since the shared memory is a fast way of communication, the data sharing can be done much more quickly.
+
