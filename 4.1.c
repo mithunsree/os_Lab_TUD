@@ -28,7 +28,7 @@ int main(void)
 	attr.mq_msgsize = 7;  
 	attr.mq_curmsgs = 0; 
 
-	msgq_id =  mq_open( MYMSGQUEUENAME,O_CREAT|O_RDWR, 0644,&attr);
+	msgq_id =  mq_open( MYMSGQUEUENAME,O_CREAT|O_RDWR, 0777,&attr);
 	
 	/*if (pipe(fd) < 0)
 	{
