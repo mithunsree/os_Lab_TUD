@@ -2,6 +2,9 @@ Task 1.1      :Refer to program 1.1.c
 Question 1.1  :Execute your program from task 1.1 at least 100 times. Is the output of your program always exactly the same?                   Which value does the parent process print for my_value? What does the child print? Explain your observations.
 Solution      :After executing the task 100 times the output of the program is not always the same since the process ID of both                parent and child changes at each execution and values of 'my_value' remains unchanged for both the processes.The                parent process prints 42 as the value of 'my_value',child process prints 18951 as the value of 'my_value'.                      According to the obsevations made the value of 'my_vlaue' does not change  but the ID of the process changes each                time the program is executed.
 
+Task 2.1     : Refer to program 2.1.c
+Question 2.1 : The thread id of main thread and newly created thread always changes in each execution. the my_value of main thread and new thread remains same. For main thread my_value is : 42, For new thread my_value is : 18951. After the joining of thread my_value is : 18951. When it is compared with the program 1.1.c, the child id and parent id is changing on every execution but the my_value remains same.
+
 
 
 
