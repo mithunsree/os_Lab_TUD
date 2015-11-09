@@ -1,3 +1,11 @@
+Task 1.1      :Refer to program 1.1.c
+Question 1.1  :Execute your program from task 1.1 at least 100 times. Is the output of your program always exactly the same?                   Which value does the parent process print for my_value? What does the child print? Explain your observations.
+Solution      :After executing the task 100 times the output of the program is not always the same since the process ID of both                parent and child changes at each execution and values of 'my_value' remains unchanged for both the processes.The                parent process prints 42 as the value of 'my_value',child process prints 18951 as the value of 'my_value'.                      According to the obsevations made the value of 'my_vlaue' does not change  but the ID of the process changes each                time the program is executed.
+
+
+
+
+
 Task 3.1	: Refer to program 3.1.c
 Question 3.1	: The PID always changes and after re-initializing the global variable my_value to 18951 in child it retains its value 
 		  throughout the execution.Since my_value is a global variable changes done to it in the child process will also be 
