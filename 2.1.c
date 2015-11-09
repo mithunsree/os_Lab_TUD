@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <pthread.h>  //header file for thread functions
+#include <unistd.h>  //header file for usleep function
 
 
 void* my_thread_function(void *arg);
