@@ -17,6 +17,13 @@ Question 3.2	: Pipes perhaps not exactly the most efficient way to do so, though
 		  The overhead of creating and opening the file descriptors will be costly and also one way communication is not efficient.
 		  The only advantage may be the syncronization between threads as one thread will only read and the other shall write.
 		  
+
+Task 4.1	: Refer to program 4.1.c
+Question 4.1	: The PID always changes and changes to variables in a child process do not affect the value of the variables in the parent process. This observation is similar to that of program 3.1. Message queues are limited in size, while pipes aren't. We will  use message queues were reading and writing process has to be done concurrently.  But in pipes we have to stop the writing process in order to read from it.
+ 
+Question 4.2	: Message queues can be used in multi-threaded programs for asynchronous communication. To pass messages between a 'producer' thread and 'consumer' thread, the  'producer' can add messages to message queue and consumer threads can read them, without blocking the 'producer' from writing.
+
+
 Task 5.1 : Refer to program 5.1.c
 
 Question 5.1 : After running the program atleast 100 times you can notice that the pid of the Parent as well as the child keeps on changing but the global my_value remains unchanged. In Shared Memory the access to the memory is unsychronized. So if a process is updating the shared memory, then another process should not be updating or reading the same shared memory. But in message queue eventhough the access is slow, it makes sure the data is read in the same order the data is written.
