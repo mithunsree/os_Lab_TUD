@@ -31,26 +31,33 @@ int main(void)
         if (fd == -1)
         {
 	fprintf(stderr,"shm_open failed\n");
+	return -1;
         }
 
         r = ftruncate(fd, region_size);
         if (r != 0)
         {
                 fprintf(stderr,"ftruncate failed\n");
+		r = shm_unlink(MYSHMNAME);
+		return -1;
         }
 
         void *ptr = mmap(0, region_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
         if (ptr == MAP_FAILED)
         {
-                fprintf(stderr,"mmap");
+                fprintf(stderr,"Mapping Falied");
+		r = shm_unlink(MYSHMNAME);
+		return -1;
         }
         close(fd);
 
         if ((pid = fork()) < 0)
         {
                 fprintf(stderr,"fork error\n");
+		r = shm_unlink(MYSHMNAME);
+		return -1;
         }
-        usleep(150000);
+        //usleep(150000);
 
 	if(pid > 0)
 	{
@@ -62,7 +69,7 @@ int main(void)
 	if( pid == 0 )
 	{
 		char *message2 = NULL;
-                usleep(500000);
+                //usleep(500000);
                 my_value = 18951;
                 fprintf(stderr,"I am the child.Parent wrote:\n %s\n",(char *) ptr);
                 message2 = (char *)ptr;
@@ -70,10 +77,10 @@ int main(void)
 		exit(1);
 	}
 
-	if(pid > 0)
+	if(pid > 1)
 	{
+		usleep(150000);
 		//fprintf(stderr,"I am the Parent.Child wrote:\n %s\n",(char *) ptr);
-        	wait(&status);
 //		if(WIFSTOPPED(status))
 //		{
 			fprintf(stderr,"I am the Parent.Child wrote:\n %s\n",(char *) ptr);	
@@ -82,10 +89,15 @@ int main(void)
         	if (r != 0)
         	{
                 	fprintf(stderr,"munmap failed");
+			r=shm_unlink(MYSHMNAME);
+			return -1;
         	}
         	r = shm_unlink(MYSHMNAME);
-        	if (r != 0)
-        	fprintf(stderr,"shm_unlink failed");
+        	if (r != 0){
+	        	fprintf(stderr,"shm_unlink failed");
+			return -1;		
+		}
 	}
+	wait(&status);
 	return 0;
 }
