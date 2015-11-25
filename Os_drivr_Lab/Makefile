@@ -1,4 +1,4 @@
-MODULENAME=deeds_clock
+MODULENAME=deeds_config_clock
 
 obj-m += $(MODULENAME).o
 
