@@ -13,15 +13,15 @@
 static char proc_data[MAX_PROC_SIZE];
 
 
-int read_proc(char *buf,char **start,off_t offset,int count,int *eof,void *data )
+static ssize_t read_proc(char *buf,char **start,off_t offset,size_t count,int *eof,void *data )
 {
-int len=0;
+ssize_t len=0;
  len = sprintf(buf,"\n %s\n ",proc_data);
 
 return len;
 }
 
-int write_proc(struct file *file,const char *buf,int count,void *data )
+static ssize_t  write_proc(struct file *file,const char *buf,ssize_t count,void *data )
 {
 
 if(count > MAX_PROC_SIZE)
@@ -44,13 +44,13 @@ static int __init deeds_clock_proc_init(void) {
 	proc_dir = proc_create("deeds_config_clock", 0666, NULL, &deeds_config_clock_proc_fops);
 	if( NULL == proc_dir )
 	{
-		printk(KERN_INFO,"proc creation failed\n");
+		printk(KERN_ERR"proc creation failed\n");
 		return -1;
 	}
 	else
 	{
-		//proc_dir_entry->read_proc = read_proc ;
-		//proc_dir_entry->write_proc = write_proc;
+		//proc_dir->read_proc = &read_proc ;
+		//proc_dir->write_proc = &write_proc;
 		printk(KERN_INFO "proc initialized");
 	}
   return 0;
