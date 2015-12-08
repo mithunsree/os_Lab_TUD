@@ -5,10 +5,10 @@
 
 static int deeds_clock_proc_show(struct seq_file *m, void *v) {
   struct timeval time;
-  unsigned long long secs;
+  unsigned long long local_time;
   do_gettimeofday(&time);
-  secs = (unsigned long long)time.tv_sec;
-  seq_printf(m, "current time:%llu\n",secs);
+  local_time = (u32)(time.tv_sec - (sys_tz.tz_minuteswest * 60));
+  seq_printf(m, "current time:%llu\n",(unsigned long long)local_time);
   return 0;
 }
 
@@ -29,12 +29,12 @@ static int __init deeds_clock_proc_init(void) {
 	proc_dir = proc_create("deeds_clock", 0, NULL, &deeds_clock_proc_fops);
 	if( NULL == proc_dir )
 	{
-		printk(KERN_INFO,"proc creation failed\n");
+		printk(KERN_INFO"proc creation failed\n");
 		return -1;
 	}
 	else
 	{
-		printk(KERN_INFO,"proc creation successful\n");
+		printk(KERN_INFO"proc creation successful\n");
 	}
   return 0;
 }

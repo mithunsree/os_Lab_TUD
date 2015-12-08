@@ -1,4 +1,4 @@
-MODULENAME=deeds_config_clock
+MODULENAME=deeds_clock
 
 obj-m += $(MODULENAME).o
 
@@ -10,7 +10,6 @@ clean:
 
 install:
 	sudo insmod $(MODULENAME).ko
-	#sudo chmod 666 /dev/$(MODULENAME)
 
 uninstall:
 	sudo rmmod $(MODULENAME)
