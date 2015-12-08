@@ -1,0 +1,4 @@
+Task 1.1 : Refer to dir deeds_clock
+Task 1.2 : refer to dir deeds_config_clock
+Question 1.1 : Initially once we load the module and do a read as there is nothing in the buffer it does not display any configuration.
+               While reading in a loop and changing the format options it does display the time in the mentioned format.     
