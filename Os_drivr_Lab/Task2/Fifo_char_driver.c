@@ -16,8 +16,8 @@ static int    majorNumber;                  ///< Stores the device number -- det
 static char   message[256] = {0};           ///< Memory for the string that is passed from userspace
 static short  size_of_message;              ///< Used to remember the size of the string stored
 static int    numberOpens = 0;              ///< Counts the number of times the device is opened
-static struct class*  FifoDriverClass  = NULL; ///< The device-driver class struct pointer
-static struct device* FifoDriver = NULL; ///< The device-driver device struct pointer
+static struct class*  Fifo_char_DriverClass  = NULL; ///< The device-driver class struct pointer
+static struct device* Fifo_char_Driver = NULL; ///< The device-driver device struct pointer
 
 
 // The prototype functions for the character driver -- must come before the struct definition
@@ -77,9 +77,9 @@ static int __init Init_Fifo_Driver(void) {
 static void __exit exit_Fifo_Driver(void) {
     printk(KERN_ALERT"Inside the exit Fifo function");
     
-    device_destroy(FifoDriverClass, MKDEV(majorNumber, 0));     // remove the device
-    class_unregister(FifoDriverClass);                          // unregister the device class
-    class_destroy(FifoDriverClass);                             // remove the device class
+    device_destroy(Fifo_char_DriverClass, MKDEV(majorNumber, 0));     // remove the device
+    class_unregister(Fifo_char_DriverClass);                          // unregister the device class
+    class_destroy(Fifo_char_DriverClass);                             // remove the device class
     unregister_chrdev(240,"FIFO_Driver");
     printk(KERN_INFO "FifoDriver: Goodbye from the LKM!n");
     
