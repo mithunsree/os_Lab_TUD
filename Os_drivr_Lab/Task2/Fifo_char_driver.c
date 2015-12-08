@@ -5,7 +5,9 @@
 #include <linux/kernel.h>         // Contains types, macros, functions for the kernel
 #include <asm/uaccess.h>
 #include<linux/fs.h> //For Charachter driver support
-#define  DEVICE_NAME "Fifo_char_Driver"    ///< The device will appear at /dev/ebbchar using this value
+#define  WRITE_DEVICE_NAME "Fifo_char_Driver"    ///< The device will appear at /dev/ebbchar using this value
+#define  READ_DEVICE_NAME "Fifo_char_Driver1" 
+#define  DEVICE_NAME "Fifo_char_Driver"
 #define  CLASS_NAME  "FifoDiverClass"        ///< The device class -- this is a character device driver
 
 
@@ -18,7 +20,8 @@ static short  size_of_message;              ///< Used to remember the size of th
 static int    numberOpens = 0;              ///< Counts the number of times the device is opened
 static struct class*  Fifo_char_DriverClass  = NULL; ///< The device-driver class struct pointer
 static struct device* Fifo_char_Driver = NULL; ///< The device-driver device struct pointer
-
+static struct device* Fifo_char_Driver1 = NULL; ///< The device-driver device struct pointer
+static struct device* Fifo_char_Driver0 = NULL; 
 
 // The prototype functions for the character driver -- must come before the struct definition
 static int     dev_open(struct inode *, struct file *);
@@ -48,8 +51,8 @@ static int __init Init_Fifo_Driver(void) {
     
     //getting majo number for our LKM
     register_chrdev(240,"Fifo_char_driver",&Fifo_file_operations);
-    majorNumber=40;
-    printk(KERN_INFO "Fifo Char Driver: registered correctly with major number %dn", majorNumber);
+    majorNumber=240;
+    printk(KERN_INFO "Fifo Char Driver: registered correctly with major number %d", majorNumber);
     
     
     // Register the device class
@@ -59,17 +62,27 @@ static int __init Init_Fifo_Driver(void) {
         printk(KERN_ALERT "Failed to register device classn");
         return PTR_ERR(Fifo_char_DriverClass);          // Correct way to return an error on a pointer
     }
-    printk(KERN_INFO "Fifo Char Driver: device class registered correctlyn");
+    printk(KERN_INFO "Fifo Char Driver: device class registered correctly");
     
-    // Register the device driver
-    Fifo_char_Driver = device_create(Fifo_char_DriverClass, NULL, MKDEV(majorNumber, 0), NULL, DEVICE_NAME);
-    if (IS_ERR(Fifo_char_Driver)){               // Clean up if there is an error
+    // Register the device driver for writeonly
+    Fifo_char_Driver0 = device_create(Fifo_char_DriverClass, NULL, MKDEV(majorNumber, 0), NULL,  DEVICE_NAME);
+    if (IS_ERR(Fifo_char_Driver0)){               // Clean up if there is an error
         class_destroy(Fifo_char_DriverClass);           // Repeated code but the alternative is goto statements
         unregister_chrdev(majorNumber, DEVICE_NAME);
         printk(KERN_ALERT "Failed to create the devicen");
-        return PTR_ERR(Fifo_char_Driver);
+        return PTR_ERR(Fifo_char_Driver0);
     }
-    printk(KERN_INFO "FifoDriver: device class created correctlyn"); // Made it! device was initialized
+    printk(KERN_INFO "FifoDriver 0: device class created correctlyn"); // Made it! device was initialized
+
+// Register the device driver for readonly
+    Fifo_char_Driver1 = device_create(Fifo_char_DriverClass, NULL, MKDEV(majorNumber, 1), NULL,   DEVICE_NAME);
+    if (IS_ERR(Fifo_char_Driver1)){               // Clean up if there is an error
+        class_destroy(Fifo_char_DriverClass);           // Repeated code but the alternative is goto statements
+        unregister_chrdev(majorNumber, DEVICE_NAME);
+        printk(KERN_ALERT "Failed to create the devicen");
+        return PTR_ERR(Fifo_char_Driver1);
+    }
+    printk(KERN_INFO "FifoDriver 1: device class created correctlyn"); // Made it! device was initialized
     return 0;
 }
 
