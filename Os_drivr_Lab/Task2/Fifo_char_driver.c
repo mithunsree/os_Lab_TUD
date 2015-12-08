@@ -5,7 +5,7 @@
 #include <linux/kernel.h>         // Contains types, macros, functions for the kernel
 #include <asm/uaccess.h>
 #include<linux/fs.h> //For Charachter driver support
-#define  DEVICE_NAME "FifoDriver"    ///< The device will appear at /dev/ebbchar using this value
+#define  DEVICE_NAME "Fifo_char_Driver"    ///< The device will appear at /dev/ebbchar using this value
 #define  CLASS_NAME  "FifoDiverClass"        ///< The device class -- this is a character device driver
 
 
@@ -53,21 +53,21 @@ static int __init Init_Fifo_Driver(void) {
     
     
     // Register the device class
-    FifoDriverClass = class_create(THIS_MODULE, CLASS_NAME);
-    if (IS_ERR(FifoDriverClass)){                // Check for error and clean up if there is
+    Fifo_char_DriverClass = class_create(THIS_MODULE, CLASS_NAME);
+    if (IS_ERR(Fifo_char_DriverClass)){                // Check for error and clean up if there is
         unregister_chrdev(majorNumber, DEVICE_NAME);
         printk(KERN_ALERT "Failed to register device classn");
-        return PTR_ERR(FifoDriverClass);          // Correct way to return an error on a pointer
+        return PTR_ERR(Fifo_char_DriverClass);          // Correct way to return an error on a pointer
     }
     printk(KERN_INFO "Fifo Char Driver: device class registered correctlyn");
     
     // Register the device driver
-    FifoDriver = device_create(FifoDriverClass, NULL, MKDEV(majorNumber, 0), NULL, DEVICE_NAME);
-    if (IS_ERR(FifoDriver)){               // Clean up if there is an error
-        class_destroy(FifoDriverClass);           // Repeated code but the alternative is goto statements
+    Fifo_char_Driver = device_create(Fifo_char_DriverClass, NULL, MKDEV(majorNumber, 0), NULL, DEVICE_NAME);
+    if (IS_ERR(Fifo_char_Driver)){               // Clean up if there is an error
+        class_destroy(Fifo_char_DriverClass);           // Repeated code but the alternative is goto statements
         unregister_chrdev(majorNumber, DEVICE_NAME);
         printk(KERN_ALERT "Failed to create the devicen");
-        return PTR_ERR(FifoDriver);
+        return PTR_ERR(Fifo_char_Driver);
     }
     printk(KERN_INFO "FifoDriver: device class created correctlyn"); // Made it! device was initialized
     return 0;
